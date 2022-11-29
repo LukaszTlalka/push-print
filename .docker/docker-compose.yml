@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+  web:
+    build:
+      dockerfile: .docker/web/Dockerfile
+      context: ..
+      args:
+        - INSTALL_XDEBUG=${WEB_INSTALL_XDEBUG-false}
+        - INSTALL_SPX=${WEB_INSTALL_SPX-false}
+        - INSTALL_STRIPE_CLI=${WEB_INSTALL_STRIPE_CLI-false}
+        - VIM_STOCK=${WEB_VIM_STOCK-false}
+    environment:
+      - DISABLE_NPM_AUTORUN=${WEB_DISABLE_NPM_AUTORUN-false}
+    volumes:
+      - ../:/var/www
+      - ./docker_volumes/web/spx:/spx-data
+      - ./docker_volumes/web/stripe:/root/.config/stripe/
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    entrypoint: ["/var/www/.docker/web/entrypoint.sh"]
