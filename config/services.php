@@ -31,4 +31,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'documentServices' => [
+        [
+            'url' => env('DOCUMENT_SERVICE_URL1'),
+            'key' => env('DOCUMENT_SERVICE_KEY1'),
+            'directory' => env('DOCUMENT_SERVICE_DIRECTORY1'),
+            'printer' => env('DOCUMENT_SERVICE_PRINTER1'),
+        ],
+    ]
 ];

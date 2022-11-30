@@ -11,7 +11,7 @@ class PullPrintQueue extends Command
      *
      * @var string
      */
-    protected $signature = 'print:pull-queue';
+    protected $signature = 'print:pull-queue {--watch}';
 
     /**
      * The console command description.
@@ -27,6 +27,17 @@ class PullPrintQueue extends Command
      */
     public function handle()
     {
+        $services = config('services.documentServices');
+
+        do {
+            dd($services);
+        } while($this->option('watch') && !sleep(1));
+
         return Command::SUCCESS;
+    }
+
+    private function getServices()
+    {
+
     }
 }
