@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\DocumentService;
 
 class PullPrintQueue extends Command
 {
@@ -27,10 +28,10 @@ class PullPrintQueue extends Command
      */
     public function handle()
     {
-        $services = config('services.documentServices');
+        $services = $this->getServices();
 
         do {
-            dd($services);
+            $services->map(fn($service) => $service->downloadFiles());
         } while($this->option('watch') && !sleep(1));
 
         return Command::SUCCESS;
@@ -38,6 +39,18 @@ class PullPrintQueue extends Command
 
     private function getServices()
     {
+        $serviceConfigs = collect(config('services.documentServices'))
+            ->filter(fn($sConfig) => $sConfig['url']);
 
+        $services = collect();
+        foreach ($serviceConfigs as $sConfig) {
+            $services->push(new DocumentService(
+                $sConfig['url'],
+                $sConfig['key'],
+                $sConfig['directory'],
+                $sConfig['printer']
+            ));
+        }
+        return $services;
     }
 }

@@ -38,5 +38,11 @@ return [
             'directory' => env('DOCUMENT_SERVICE_DIRECTORY1'),
             'printer' => env('DOCUMENT_SERVICE_PRINTER1'),
         ],
+        [
+            'url' => env('DOCUMENT_SERVICE_URL2'),
+            'key' => env('DOCUMENT_SERVICE_KEY2'),
+            'directory' => env('DOCUMENT_SERVICE_DIRECTORY2'),
+            'printer' => env('DOCUMENT_SERVICE_PRINTER2'),
+        ],
     ]
 ];
