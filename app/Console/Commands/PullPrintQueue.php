@@ -31,7 +31,11 @@ class PullPrintQueue extends Command
         $services = $this->getServices();
 
         do {
-            $services->map(fn($service) => $service->downloadFiles());
+            $services->map(function($service) {
+                if ($fileName = $service->downloadFiles()) {
+                    $this->info("New printing job available: ". $fileName);
+                }
+            });
         } while($this->option('watch') && !sleep(1));
 
         return Command::SUCCESS;
@@ -40,15 +44,15 @@ class PullPrintQueue extends Command
     private function getServices()
     {
         $serviceConfigs = collect(config('services.documentServices'))
-            ->filter(fn($sConfig) => $sConfig['url']);
+            ->filter(fn($sConfig) => $sConfig['base_uri']);
 
         $services = collect();
         foreach ($serviceConfigs as $sConfig) {
             $services->push(new DocumentService(
-                $sConfig['url'],
+                $sConfig['base_uri'],
                 $sConfig['key'],
                 $sConfig['directory'],
-                $sConfig['printer']
+                $sConfig['printer_id']
             ));
         }
         return $services;
