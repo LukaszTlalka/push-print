@@ -28,12 +28,9 @@ class DocumentService
 
         $data = json_decode((string)$response->getBody());
 
-        //file_put_contents("/tmp/job-serialized", serialize($data));
-        ///$data = unserialize(file_get_contents("/tmp/job-serialized"));
-
         if ($job = $data->job) {
             $fileName = preg_replace( '/[^a-z0-9.]+/', '-', strtolower( $job->filename ) );
-            Storage::disk('printing')->put($this->directory . "/" . $fileName, $job->file);
+            Storage::disk('printing')->put($this->directory . "/" . $fileName, base64_decode($job->file));
             return $fileName;
         }
 
