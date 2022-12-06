@@ -50,9 +50,7 @@ class PullPrintQueue extends Command
         foreach ($serviceConfigs as $sConfig) {
             $services->push(new DocumentService(
                 $sConfig['base_uri'],
-                $sConfig['key'],
-                $sConfig['directory'],
-                $sConfig['printer_id']
+                $sConfig['key']
             ));
         }
         return $services;

@@ -35,14 +35,10 @@ return [
         [
             'base_uri' => env('DOCUMENT_SERVICE_BASE_URI1'),
             'key' => env('DOCUMENT_SERVICE_KEY1'),
-            'directory' => env('DOCUMENT_SERVICE_DIRECTORY1'),
-            'printer_id' => env('DOCUMENT_SERVICE_PRINTER_ID1'),
         ],
         [
             'base_uri' => env('DOCUMENT_SERVICE_BASE_URI2'),
             'key' => env('DOCUMENT_SERVICE_KEY2'),
-            'directory' => env('DOCUMENT_SERVICE_DIRECTORY2'),
-            'printer_id' => env('DOCUMENT_SERVICE_PRINTER_ID2'),
         ],
     ]
 ];

@@ -11,10 +11,13 @@ class DocumentService
 {
     public function __construct(
         private string $baseUri,
-        private string $key,
-        private string $directory,
-        private string $printerID)
+        private string $key)
     {
+    }
+
+    private function sanitizeFile($filename)
+    {
+        return preg_replace( '/[^a-z0-9.]+/', '-', strtolower( $filename ) );
     }
 
     /**
@@ -23,14 +26,17 @@ class DocumentService
     public function downloadFiles(): null|string
     {
         $client = new Client();
-        $url = rtrim($this->baseUri, "/") . "/api/print/job?key={$this->key}&printer_id=" . $this->printerID;
+        $url = rtrim($this->baseUri, "/") . "/api/print/job?key={$this->key}";
         $response = $client->get($url);
 
         $data = json_decode((string)$response->getBody());
 
         if ($job = $data->job) {
-            $fileName = preg_replace( '/[^a-z0-9.]+/', '-', strtolower( $job->filename ) );
-            Storage::disk('printing')->put($this->directory . "/" . $fileName, base64_decode($job->file));
+
+            $fileName = $this->sanitizeFile(strtolower($job->filename));
+            $directory = $this->sanitizeFile(strtolower($job->printer->name));
+
+            Storage::disk('printing')->put($directory . "/" . $fileName, base64_decode($job->file));
             return $fileName;
         }
 

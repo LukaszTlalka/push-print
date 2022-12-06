@@ -18,5 +18,5 @@ services:
       - ./docker_volumes/web/stripe:/root/.config/stripe/
     extra_hosts:
       - host.docker.internal:host-gateway
-    entrypoint: ["/var/www/.docker/web/entrypoint-live.sh"]
-#    entrypoint: ["/var/www/.docker/web/entrypoint.sh"]
+#    entrypoint: ["/bin/bash", "/var/www/.docker/web/entrypoint-live.sh"]
+    entrypoint: ["/bin/bash", "/var/www/.docker/web/entrypoint.sh"]
